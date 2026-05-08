@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>독도 영유권 갈등 심층 분석 보고서</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Noto Sans KR"', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary': '#1e3a8a', // deep blue
+                        'secondary': '#3b82f6', // blue
+                        'accent': '#f59e0b', // amber
+                        'dark': '#111827',
+                        'light': '#f8fafc',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f8fafc;
+            color: #334155;
+            line-height: 1.7;
+        }
+        
+        /* Fade in animation classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Timeline vertical line */
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 24px;
+            width: 2px;
+            background-color: #e2e8f0;
+            z-index: 0;
+        }
+        @media (min-width: 768px) {
+            .timeline-line::before {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+
+        /* Executive Insight gradient border */
+        .insight-box {
+            position: relative;
+            background: #ffffff;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .insight-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, #3b82f6, #1e3a8a);
+            border-top-left-radius: 0.5rem;
+            border-bottom-left-radius: 0.5rem;
+        }
+
+        /* Nav link active state */
+        .nav-link.active {
+            color: #1e3a8a;
+            font-weight: 700;
+            border-left-color: #1e3a8a;
+            background-color: #eff6ff;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-blue-200 selection:text-blue-900">
+
+    <header class="relative bg-primary text-white overflow-hidden">
+        <div class="absolute inset-0 opacity-20">
+            <svg class="h-full w-full object-cover" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
+                <path fill="#ffffff" fill-opacity="1" d="M0,224L48,213.3C96,203,192,181,288,186.7C384,192,480,224,576,218.7C672,213,768,171,864,149.3C960,128,1056,128,1152,149.3C1248,171,1344,213,1392,234.7L1440,256L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+            </svg>
+        </div>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
+            <span class="inline-block py-1 px-3 rounded-full bg-blue-800 text-blue-100 text-sm font-semibold tracking-wider mb-4 border border-blue-700">
+                심층 분석 보고서
+            </span>
+            <h1 class="text-3xl md:text-5xl lg:text-6xl font-black tracking-tight leading-tight mb-6">
+                독도 영유권 갈등의<br/>역사적 전개와 법적 지위 변화
+            </h1>
+            <p class="text-lg md:text-xl text-blue-100 max-w-3xl font-light">
+                1946년 SCAPIN 제677호부터 현대의 교과서 왜곡까지, 전후 국제 질서 속에서 변모해 온 독도의 법적 지위를 실증적으로 추적하고 갈등의 구조적 원인을 분석합니다.
+            </p>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex flex-col lg:flex-row gap-12">
+        
+        <!-- Sidebar Navigation (Sticky) -->
+        <aside class="lg:w-1/4 hidden lg:block">
+            <div class="sticky top-8 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">목차</h3>
+                <nav class="flex flex-col space-y-1 border-l-2 border-gray-100" id="toc">
+                    <a href="#intro" class="nav-link block px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 border-l-2 border-transparent -ml-[2px] transition-colors">1. 서론: 전후 국제 질서</a>
+                    <a href="#scapin" class="nav-link block px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 border-l-2 border-transparent -ml-[2px] transition-colors">2. 초기 영토 획정 (SCAPIN)</a>
+                    <a href="#sf-treaty" class="nav-link block px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 border-l-2 border-transparent -ml-[2px] transition-colors">3. 샌프란시스코 강화 조약</a>
+                    <a href="#rhee-line" class="nav-link block px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 border-l-2 border-transparent -ml-[2px] transition-colors">4. 이승만 라인과 주권 수호</a>
+                    <a href="#treaty-1965" class="nav-link block px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 border-l-2 border-transparent -ml-[2px] transition-colors">5. 1965년 한일기본조약과 밀약</a>
+                    <a href="#modern" class="nav-link block px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 border-l-2 border-transparent -ml-[2px] transition-colors">6. 현대적 갈등 재점화</a>
+                    <a href="#education" class="nav-link block px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 border-l-2 border-transparent -ml-[2px] transition-colors">7. 교과서 왜곡과 여론</a>
+                    <a href="#conclusion" class="nav-link block px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 border-l-2 border-transparent -ml-[2px] transition-colors">8. 결론 및 향후 과제</a>
+                </nav>
+            </div>
+        </aside>
+
+        <main class="lg:w-3/4 space-y-24">
+
+            <!-- Section 1: Intro -->
+            <section id="intro" class="reveal scroll-mt-24">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-100 text-primary font-bold text-xl">1</span>
+                    <h2 class="text-2xl md:text-3xl font-bold text-gray-900">서론: 전후 국제 질서와 독도 문제의 전략적 요충지화</h2>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-gray-700 space-y-4">
+                    <p>제2차 세계대전의 종전은 단순한 교전의 중단이 아닌, 동북아시아의 지정학적 경계를 재설계하는 거대한 변곡점이었습니다. 연합국이 전후 처리 과정에서 수립한 영토 획정 원칙은 식민 지배하에 있던 영토들의 주권 회복을 결정하는 기준이 되었으나, 이 과정에서 발생한 외교적 모호성은 오늘날까지 지속되는 한일 관계의 구조적 갈등 기제로 고착되었습니다.</p>
+                    <p>특히 독도는 지리적 요충지라는 가치를 넘어, 대한민국에는 제국주의 침략의 잔재를 청산하는 <strong>'완전한 주권 회복'의 상징</strong>이며, 일본에는 전후 국제 조약의 허점을 파고드는 전략적 분쟁 지역으로 기능하고 있습니다.</p>
+                    <blockquote class="border-l-4 border-primary pl-4 italic text-gray-600 my-6 bg-gray-50 p-4 rounded-r-lg">
+                        "본 보고서는 1946년 SCAPIN 제677호부터 현대의 교과서 기술 왜곡에 이르기까지 독도의 법적 지위 변화를 실증적으로 추적하고, 갈등의 심화를 야기한 외교적 역학 관계를 규명하고자 합니다."
+                    </blockquote>
+                    <p>국제 조약의 최종 효력이 발생하기 전, 연합군 최고사령부가 수립한 초기 영토 획정의 원칙을 분석함으로써 독도 주권의 법적 토대를 먼저 확인해 보겠습니다.</p>
+                </div>
+            </section>
+
+            <section id="scapin" class="reveal scroll-mt-24">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-100 text-primary font-bold text-xl">2</span>
+                    <h2 class="text-2xl md:text-3xl font-bold text-gray-900">전후 초기 영토 획정: SCAPIN 제677호의 법적 구속력</h2>
+                </div>
+                <p class="mb-6 text-gray-700">일본의 무조건 항복 이후 연합군 최고사령부(SCAP)가 시행한 행정적 지령들은 한국 영토의 주권 회복을 국제적으로 공인한 첫 번째 법적 장치였습니다. 이는 포츠담 선언을 이행하기 위한 구체적 실행 조치로서 일본의 주권 행사 범위를 엄격히 규정했습니다.</p>
+                
+                <div class="bg-white rounded-2xl overflow-hidden shadow-md border border-gray-200">
+                    <div class="bg-slate-800 text-white px-6 py-4 flex items-center justify-between">
+                        <h3 class="font-bold text-lg"><i class="fa-solid fa-file-contract mr-2 text-blue-400"></i>연합군최고사령관 지령(SCAPIN) 제677호</h3>
+                        <span class="text-sm bg-slate-700 px-3 py-1 rounded-full text-gray-300">1946.01.29</span>
+                    </div>
+                    <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-blue-50 p-4 rounded-xl">
+                            <div class="text-primary text-xl mb-2"><i class="fa-solid fa-ban"></i></div>
+                            <h4 class="font-bold text-gray-900 mb-2">일본 주권 제외</h4>
+                            <p class="text-sm text-gray-600">독도는 울릉도, 제주도와 함께 일본의 주권 행사 범위에서 명시적으로 제외되어 한국의 관할권으로 분류됨.</p>
+                        </div>
+                        <div class="bg-blue-50 p-4 rounded-xl">
+                            <div class="text-primary text-xl mb-2"><i class="fa-solid fa-map-location-dot"></i></div>
+                            <h4 class="font-bold text-gray-900 mb-2">부속 지도 표기 ('TAKE')</h4>
+                            <p class="text-sm text-gray-600">지도상 당시 명칭인 <strong>'TAKE'</strong>로 표기되었으나, 이는 주권 행사 제외 구역 내에 포함되어 한국 영토임을 시각적으로 증명함.</p>
+                        </div>
+                        <div class="bg-blue-50 p-4 rounded-xl">
+                            <div class="text-primary text-xl mb-2"><i class="fa-solid fa-scale-balanced"></i></div>
+                            <h4 class="font-bold text-gray-900 mb-2">강력한 법적 위상</h4>
+                            <p class="text-sm text-gray-600">일본의 항복 조건을 강제하는 명령으로서, 전후 영토 획정의 기초적인 가이드라인으로 작용함.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="sf-treaty" class="reveal scroll-mt-24">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-100 text-primary font-bold text-xl">3</span>
+                    <h2 class="text-2xl md:text-3xl font-bold text-gray-900">샌프란시스코 강화 조약: 초안과 최종안의 괴리</h2>
+                </div>
+                <p class="mb-8 text-gray-700">1951년 체결된 조약은 현재의 독도 갈등을 야기한 '법적 공백'의 기원입니다. 조약의 성안 과정에서 나타난 일본의 집요한 외교적 개입은 독도의 지위를 의도적으로 모호하게 만드는 결과를 초래했습니다.</p>
+
+                <!-- Timeline -->
+                <div class="relative timeline-line mb-10 pb-8">
+                    <!-- Event 1 -->
+                    <div class="relative z-10 flex flex-col md:flex-row items-start mb-8 md:mb-0">
+                        <div class="md:w-1/2 md:pr-12 md:text-right mb-4 md:mb-0">
+                            <h3 class="text-lg font-bold text-gray-900">1947년 1차 초안 (3월 20일)</h3>
+                            <p class="text-gray-600 mt-2">제4조에서 일본이 권원을 포기해야 할 한국의 영토로 제주도, 거문도, 울릉도와 함께 <strong>리앙쿠르암(Liancourt Rock, 다케시마)</strong>을 명확히 명기함.</p>
+                        </div>
+                        <div class="absolute left-6 md:left-1/2 transform md:-translate-x-1/2 w-4 h-4 bg-primary border-4 border-white rounded-full mt-1"></div>
+                        <div class="md:w-1/2 md:pl-12 pl-12"></div>
+                    </div>
+                    <!-- Event 2 -->
+                    <div class="relative z-10 flex flex-col md:flex-row items-start mb-8 md:mb-0 md:mt-12">
+                        <div class="md:w-1/2 md:pr-12 md:text-right mb-4 md:mb-0 order-2 md:order-1"></div>
+                        <div class="absolute left-6 md:left-1/2 transform md:-translate-x-1/2 w-4 h-4 bg-primary border-4 border-white rounded-full mt-1 order-1 md:order-2"></div>
+                        <div class="md:w-1/2 md:pl-12 pl-12 order-3 md:order-3">
+                            <h3 class="text-lg font-bold text-gray-900">1950년 다자간 합의서</h3>
+                            <p class="text-gray-600 mt-2">연합국의 '구일본영토처리에 관한 합의서' 부속 지도에서도 독도는 한국 영토로 처리됨. 48개 연합국 및 관련국이 합의한 다자적 컨센서스 달성.</p>
+                        </div>
+                    </div>
+                    <!-- Event 3 -->
+                    <div class="relative z-10 flex flex-col md:flex-row items-start md:mt-12">
+                        <div class="md:w-1/2 md:pr-12 md:text-right mb-4 md:mb-0">
+                            <h3 class="text-lg font-bold text-red-600">1951년 9월 최종안</h3>
+                            <p class="text-gray-600 mt-2">일본의 로비로 인해 최종안에서 <strong>독도가 명시적으로 누락</strong>됨. 법적 모호성이 발생한 결정적 계기.</p>
+                        </div>
+                        <div class="absolute left-6 md:left-1/2 transform md:-translate-x-1/2 w-4 h-4 bg-red-500 border-4 border-white rounded-full mt-1"></div>
+                        <div class="md:w-1/2 md:pl-12 pl-12"></div>
+                    </div>
+                </div>
+
+                <!-- Executive Insight -->
+                <div class="insight-box mt-8">
+                    <div class="flex items-center gap-2 mb-3">
+                        <i class="fa-solid fa-lightbulb text-accent text-xl"></i>
+                        <h4 class="font-black text-gray-900 text-lg">Executive Insight: "So What?"</h4>
+                    </div>
+                    <p class="text-gray-700">최종안에서 독도가 명시적으로 누락된 것은 1950년까지 유지된 <strong>'다자적 합의'</strong>가 일본 측의 집요한 로비와 미국 국무부 내 친일 성향 외교관들의 개입으로 인해 <strong>'양자적 타협'</strong>으로 변질되었음을 의미합니다. 일본은 이 법적 모호성을 역이용하여 <span class="bg-red-100 text-red-800 px-1 rounded">"조약상 포기한 영토에 독도가 포함되지 않았다"</span>는 논리를 구축했으며, 이는 오늘날 일본 영유권 주장의 구조적 빌미가 되었습니다.</p>
+                </div>
+            </section>
+
+            <section id="rhee-line" class="reveal scroll-mt-24">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-100 text-primary font-bold text-xl">4</span>
+                    <h2 class="text-2xl md:text-3xl font-bold text-gray-900">주권 수호의 실천: 이승만 라인과 의용수비대</h2>
+                </div>
+                
+                <div class="bg-gray-900 text-white rounded-2xl p-8 relative overflow-hidden shadow-xl">
+                    <div class="absolute -right-10 -top-10 text-gray-800 opacity-50">
+                        <i class="fa-solid fa-anchor text-9xl"></i>
+                    </div>
+                    <div class="relative z-10">
+                        <h3 class="text-2xl font-bold mb-2 text-blue-300">인접해양의 주권에 대한 선언 (평화선)</h3>
+                        <p class="text-gray-400 mb-6"><i class="fa-regular fa-calendar mr-2"></i>1952년 1월 18일 선포</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="text-lg font-semibold text-white mb-2 flex items-center"><i class="fa-solid fa-bullseye mr-2 text-accent"></i>전략적 목적</h4>
+                                <p class="text-gray-300 text-sm">조약 발효 후 예상되는 일본 어선의 무분별한 영해 침범을 방지하고 실효적 지배력을 공고화하기 위한 강력한 주권 선언.</p>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-white mb-2 flex items-center"><i class="fa-solid fa-water mr-2 text-accent"></i>관할권 확립</h4>
+                                <p class="text-gray-300 text-sm">독도 기점 8해리를 영해로 간주, 해안으로부터 평균 60마일 수역의 어족자원 및 대륙붕 주권 천명.</p>
+                            </div>
+                            <div class="md:col-span-2 bg-gray-800 p-4 rounded-lg mt-2 border border-gray-700">
+                                <h4 class="text-lg font-semibold text-red-400 mb-2 flex items-center"><i class="fa-solid fa-shield-halved mr-2"></i>독도 의용수비대의 저항</h4>
+                                <p class="text-gray-300 text-sm">일본 외무성의 항의(1953.08)에 맞서, 상륙을 시도하는 일본 선박에 대해 발포 대응하는 등 실효적 지배를 위한 강력한 물리적 저항권을 행사함.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="treaty-1965" class="reveal scroll-mt-24">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-100 text-primary font-bold text-xl">5</span>
+                    <h2 class="text-2xl md:text-3xl font-bold text-gray-900">1965년 한일기본조약과 '독도 밀약'</h2>
+                </div>
+                <p class="mb-6 text-gray-700">국교 정상화 과정에서 양국은 독도 문제를 근본적으로 해결하는 대신, 외교적 성과를 위해 갈등을 <strong>'정치적으로 봉합'</strong>했습니다. 일본의 국제사법재판소(ICJ) 회부 제안을 한국이 거부한 가운데, 비공식적인 <strong>'독도 밀약(1965.01)'</strong>이 성립되었습니다.</p>
+
+                <h3 class="text-xl font-bold mb-4 text-center mt-10">독도 밀약 4개 조항</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                    <div class="border border-gray-200 bg-white p-5 rounded-xl hover:shadow-md transition-shadow">
+                        <div class="text-primary font-black text-2xl mb-2 opacity-50">01</div>
+                        <h4 class="font-bold text-gray-900 mb-1">영유권 주장 유지</h4>
+                        <p class="text-sm text-gray-600">독도를 자국 영토라고 각자 주장하는 것을 서로 인정하며, 이의를 제기하지 않는다.</p>
+                    </div>
+                    <div class="border border-gray-200 bg-white p-5 rounded-xl hover:shadow-md transition-shadow">
+                        <div class="text-primary font-black text-2xl mb-2 opacity-50">02</div>
+                        <h4 class="font-bold text-gray-900 mb-1">공동수역 설정</h4>
+                        <p class="text-sm text-gray-600">장래 어업구역 설정 시 독도를 기점으로 하는 선이 중복되는 부분을 공동수역으로 한다.</p>
+                    </div>
+                    <div class="border border-gray-200 bg-white p-5 rounded-xl hover:shadow-md transition-shadow">
+                        <div class="text-primary font-black text-2xl mb-2 opacity-50">03</div>
+                        <h4 class="font-bold text-gray-900 mb-1">현상 유지 원칙</h4>
+                        <p class="text-sm text-gray-600">한국의 현재 '점거'를 유지하되, 경비원 증강이나 시설의 신축·증축은 하지 않는다.</p>
+                    </div>
+                    <div class="border border-gray-200 bg-white p-5 rounded-xl hover:shadow-md transition-shadow">
+                        <div class="text-primary font-black text-2xl mb-2 opacity-50">04</div>
+                        <h4 class="font-bold text-gray-900 mb-1">합의 준수</h4>
+                        <p class="text-sm text-gray-600">양국은 이 합의를 계속 지켜나간다.</p>
+                    </div>
+                </div>
+
+                <div class="insight-box">
+                    <div class="flex items-center gap-2 mb-3">
+                        <i class="fa-solid fa-lightbulb text-accent text-xl"></i>
+                        <h4 class="font-black text-gray-900 text-lg">Executive Insight: "So What?"</h4>
+                    </div>
+                    <p class="text-gray-700">이 밀약은 소위 <strong>'투트랙(Two-Track) 외교'</strong>의 전형입니다. 대외적으로는 영유권을 주장하면서도 내부적으로는 현상 유지를 통해 갈등을 억제했습니다. 하지만 이는 주권의 핵심 요소를 정치적 거래의 대상으로 삼음으로써, <strong>향후 국제법 질서가 변화할 때 갈등이 재폭발할 수밖에 없는 시한폭탄</strong>을 심은 결과를 초래했습니다.</p>
+                </div>
+            </section>
+
+            <section id="modern" class="reveal scroll-mt-24">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-100 text-primary font-bold text-xl">6</span>
+                    <h2 class="text-2xl md:text-3xl font-bold text-gray-900">현대적 갈등의 재점화: 신한일 어업협정과 '다케시마의 날'</h2>
+                </div>
+                
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+                    <div class="flex items-center mb-4 text-blue-600 font-semibold">
+                        <i class="fa-solid fa-globe mr-2"></i> 1994년 UN 해양법 협약(UNCLOS) 발효
+                    </div>
+                    <p class="text-gray-700 mb-6">독도 문제를 단순한 섬의 점유를 넘어 <strong>배타적 경제수역(EEZ)</strong>이라는 거대한 경제적 이해관계로 확산시켰습니다.</p>
+                    
+                    <div class="pl-4 border-l-4 border-gray-200 space-y-4 mb-6">
+                        <div>
+                            <h4 class="font-bold text-gray-900">1998년 신한일 어업협정</h4>
+                            <p class="text-sm text-gray-600">울릉도와 오키섬을 기준으로 중간수역을 설정하면서 독도가 그 수역 내에 포함됨. 지명 대신 좌표 표기에 합의하며 논란 야기.</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-900">2005년 시마네현의 도발</h4>
+                            <p class="text-sm text-gray-600">어획량 감소 불만으로 3월 16일 '다케시마의 날' 조례 제정 단행.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-indigo-50 p-6 rounded-xl border border-indigo-100">
+                        <h4 class="font-bold text-indigo-900 mb-2"><i class="fa-solid fa-microphone mr-2"></i>한국 정부의 패러다임 전환 (2006.04)</h4>
+                        <p class="text-indigo-800 text-sm">노무현 전 대통령 특별담화: 독도 문제를 단순한 영토 분쟁이 아닌 <strong>'제국주의 침략에 대한 반성'</strong>과 <strong>'역사적 정의'</strong>의 문제로 재정의하며 정면 대응 선언.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="education" class="reveal scroll-mt-24">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-100 text-primary font-bold text-xl">7</span>
+                    <h2 class="text-2xl md:text-3xl font-bold text-gray-900">구조적 갈등의 심화: 일본 교과서 왜곡과 여론</h2>
+                </div>
+                <p class="mb-8 text-gray-700">일본 정부는 미래 세대에게 왜곡된 영토 인식을 주입함으로써 갈등을 영구화하는 전략을 취하고 있습니다. 2008년 학습지도요령 명기 이후 이러한 경향은 체계적으로 강화되었습니다.</p>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                    <!-- Chart 1: Textbook Distortion -->
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                        <h3 class="text-lg font-bold text-center mb-2 text-gray-900">일본 중학교 교과서 왜곡 현황</h3>
+                        <p class="text-xs text-center text-gray-500 mb-6">(2011년 검정 통과 18종 기준)</p>
+                        <div class="relative h-64 w-full">
+                            <canvas id="textbookChart"></canvas>
+                        </div>
+                        <ul class="mt-6 text-sm text-gray-600 space-y-2">
+                            <li><i class="fa-solid fa-check text-red-500 mr-2"></i>지리(4/4), 공민(7/7) 교과서 100% 명기</li>
+                            <li><i class="fa-solid fa-check text-red-500 mr-2"></i>역사 교과서 4종 "한국의 불법 점거" 명시</li>
+                            <li><i class="fa-solid fa-pen-to-square text-red-500 mr-2"></i>미쓰무라 출판사: 협력 서술 삭제 후 불법 점거 항의로 대체 (2015)</li>
+                        </ul>
+                    </div>
+
+                    <!-- Chart 2: Public Opinion -->
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                        <h3 class="text-lg font-bold text-center mb-2 text-gray-900">한일 관계 개선의 최우선 조건 인식차</h3>
+                        <p class="text-xs text-center text-gray-500 mb-6">(2010년 한일 공동 여론조사)</p>
+                        <div class="relative h-64 w-full">
+                            <canvas id="pollChart"></canvas>
+                        </div>
+                        <p class="mt-6 text-sm text-gray-700 bg-gray-50 p-3 rounded text-center">
+                            한국은 <strong>'정의의 문제'</strong>로 접근하는 반면,<br> 일본은 <strong>'정치/경제적 관리 대상'</strong>으로 취급하는 인식의 괴리.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="conclusion" class="reveal scroll-mt-24 mb-32">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-100 text-primary font-bold text-xl">8</span>
+                    <h2 class="text-2xl md:text-3xl font-bold text-gray-900">결론: 역사적 뿌리와 평화적 해결을 위한 과제</h2>
+                </div>
+                
+                <div class="bg-gradient-to-br from-primary to-blue-800 text-white p-8 md:p-10 rounded-2xl shadow-lg">
+                    <p class="text-lg mb-6 leading-relaxed">
+                        본 보고서가 분석한 독도 갈등의 본질은 전후 처리 과정의 외교적 미비, 1965년 체제의 불안정한 타협, 그리고 일본의 의도적인 역사 인식 왜곡이 결합된 구조적 산물입니다.
+                    </p>
+                    <p class="text-lg font-bold text-blue-200 mb-6">
+                        "독도는 일본의 제국주의 침략 과정에서 가장 먼저 희생되고 식민지화되었던 영토입니다. 따라서 독도 주권의 수호는 단순히 0.18km²의 땅을 지키는 것이 아니라, 동북아시아의 전후 정의를 바로 세우는 일입니다."
+                    </p>
+                    <div class="bg-white/10 p-5 rounded-xl border border-white/20 mt-8">
+                        <h4 class="font-bold text-white mb-3 flex items-center"><i class="fa-solid fa-flag text-accent mr-2"></i>향후 과제 및 제언</h4>
+                        <ul class="space-y-2 text-sm text-blue-100 list-disc list-inside">
+                            <li>일본의 '분쟁 지역화' 전략에 휘말리는 감정적 대응 지양</li>
+                            <li>1950년 연합국 합의서 등 객관적 사료에 근거한 논리적 무장</li>
+                            <li>외교적 홍보 강화를 통한 국제 사회의 보편적 지지 확보</li>
+                            <li>감정적 대립을 넘어선 체계적이고 장기적인 교육 시스템 구축</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-8 text-center text-sm">
+        <p>본 페이지는 제공된 보고서 데이터를 바탕으로 생성되었습니다. © 2026 Dokdo Analysis Report</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // 1. Initialize Chart.js
+            Chart.defaults.font.family = "'Noto Sans KR', sans-serif";
+            Chart.defaults.color = '#64748b';
+
+            // Chart 1: Textbook Data (Pie/Doughnut Chart)
+            const ctxTextbook = document.getElementById('textbookChart').getContext('2d');
+            new Chart(ctxTextbook, {
+                type: 'doughnut',
+                data: {
+                    labels: ['독도 영유권 주장 기술', '미기술'],
+                    datasets: [{
+                        data: [14, 4],
+                        backgroundColor: [
+                            '#ef4444', // Red for distortion
+                            '#e2e8f0'  // Gray for not mentioned
+                        ],
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ' ' + context.label + ': ' + context.raw + '종 (총 18종)';
+                                }
+                            }
+                        }
+                    },
+                    cutout: '65%'
+                }
+            });
+
+            // Chart 2: Public Opinion Data (Bar Chart)
+            const ctxPoll = document.getElementById('pollChart').getContext('2d');
+            new Chart(ctxPoll, {
+                type: 'bar',
+                data: {
+                    labels: ['한국 (독도/역사 해소)', '일본 (정치적 대화)'],
+                    datasets: [{
+                        label: '우선순위 선택 비율 (%)',
+                        data: [62, 37],
+                        backgroundColor: [
+                            '#1e3a8a', // Primary blue for Korea
+                            '#f59e0b'  // Accent amber for Japan
+                        ],
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+
+            // 2. Scroll Animation (Intersection Observer)
+            const reveals = document.querySelectorAll('.reveal');
+            
+            const revealOptions = {
+                threshold: 0.15,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const revealOnScroll = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) {
+                        return;
+                    } else {
+                        entry.target.classList.add('active');
+                        // observer.unobserve(entry.target); // Uncomment to animate only once
+                    }
+                });
+            }, revealOptions);
+
+            reveals.forEach(reveal => {
+                revealOnScroll.observe(reveal);
+            });
+
+            // 3. ScrollSpy Navigation
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    // Adjust offset for better trigger point
+                    if (scrollY >= (sectionTop - 200)) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current) && current !== '') {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
