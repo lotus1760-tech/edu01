@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>독도 용어 사전 - 핵심 개념 및 역사적 명칭</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Noto Sans KR"', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary': '#1e3a8a',
+                        'secondary': '#3b82f6',
+                        'accent': '#f59e0b',
+                        'dark': '#111827',
+                        'light': '#f8fafc',
+                        'geo': '#0ea5e9',
+                        'name': '#f59e0b',
+                        'history': '#e11d48',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f8fafc;
+            color: #334155;
+            line-height: 1.7;
+        }
+
+        /* Card Hover Effects */
+        .term-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .term-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Category Accents */
+        .category-geo .icon-bg { background-color: #e0f2fe; color: #0ea5e9; }
+        .category-geo { border-top: 4px solid #0ea5e9; }
+        
+        .category-name .icon-bg { background-color: #fef3c7; color: #f59e0b; }
+        .category-name { border-top: 4px solid #f59e0b; }
+        
+        .category-history .icon-bg { background-color: #ffe4e6; color: #e11d48; }
+        .category-history { border-top: 4px solid #e11d48; }
+
+        /* Filter Button Active States */
+        .filter-btn.active.filter-all { background-color: #1e3a8a; color: white; border-color: #1e3a8a; }
+        .filter-btn.active.filter-geo { background-color: #0ea5e9; color: white; border-color: #0ea5e9; }
+        .filter-btn.active.filter-name { background-color: #f59e0b; color: white; border-color: #f59e0b; }
+        .filter-btn.active.filter-history { background-color: #e11d48; color: white; border-color: #e11d48; }
+
+        /* Animation for filtering */
+        .term-item {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-blue-200 selection:text-blue-900">
+
+    <!-- Header -->
+    <header class="relative bg-primary text-white overflow-hidden py-16 md:py-24">
+        <!-- Top Center Home Button -->
+        <div class="absolute top-6 left-1/2 transform -translate-x-1/2 z-30 flex gap-3">
+            <a href="../index.html" class="inline-flex items-center justify-center px-5 py-2.5 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-sm font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+                <i class="fa-solid fa-house mr-2"></i> 홈으로
+            </a>
+            <a href="../01/index.html" class="inline-flex items-center justify-center px-5 py-2.5 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-sm font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+                <i class="fa-solid fa-clock-rotate-left mr-2"></i> 독도연표
+            </a>
+        </div>
+
+        <div class="absolute inset-0 opacity-20">
+            <svg class="h-full w-full object-cover" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
+                <path fill="#ffffff" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,117.3C960,139,1056,181,1152,186.7C1248,192,1344,171,1392,160L1440,149.3L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+            </svg>
+        </div>
+        <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center mt-12">
+            <span class="inline-block py-1 px-3 rounded-full bg-blue-800 text-blue-100 text-sm font-semibold tracking-wider mb-4 border border-blue-700">
+                Interactive Glossary
+            </span>
+            <h1 class="text-3xl md:text-5xl font-black tracking-tight leading-tight mb-6">
+                독도 용어 사전
+            </h1>
+            <p class="text-lg text-blue-100 max-w-2xl mx-auto font-light mb-8">
+                독도와 관련된 지리, 해양, 역사적 명칭 및 주요 문서에 대한 핵심 개념을 찾아보세요.
+            </p>
+
+            <!-- Search Bar -->
+            <div class="max-w-xl mx-auto relative text-gray-800">
+                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <i class="fa-solid fa-search text-gray-400"></i>
+                </div>
+                <input type="text" id="searchInput" class="block w-full pl-11 pr-4 py-3 bg-white rounded-xl shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium transition-all" placeholder="검색어를 입력하세요 (예: 영해, 우산도, 밀약...)">
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        <!-- Filter Controls -->
+        <div class="flex flex-wrap justify-center gap-3 mb-12">
+            <button class="filter-btn active filter-all px-5 py-2 rounded-full border border-gray-300 bg-white text-gray-700 font-medium hover:bg-gray-50 transition-colors" data-filter="all">
+                전체보기
+            </button>
+            <button class="filter-btn filter-geo px-5 py-2 rounded-full border border-gray-300 bg-white text-gray-700 font-medium hover:bg-gray-50 transition-colors" data-filter="geo">
+                <i class="fa-solid fa-water mr-1 text-sky-500"></i> 지리 및 해양
+            </button>
+            <button class="filter-btn filter-name px-5 py-2 rounded-full border border-gray-300 bg-white text-gray-700 font-medium hover:bg-gray-50 transition-colors" data-filter="name">
+                <i class="fa-solid fa-map-location-dot mr-1 text-amber-500"></i> 역사적 명칭
+            </button>
+            <button class="filter-btn filter-history px-5 py-2 rounded-full border border-gray-300 bg-white text-gray-700 font-medium hover:bg-gray-50 transition-colors" data-filter="history">
+                <i class="fa-solid fa-file-contract mr-1 text-rose-500"></i> 문서 및 사건
+            </button>
+        </div>
+
+        <!-- Dictionary Grid -->
+        <div id="termGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            <!-- ================= Category: Geo ================= -->
+            <div class="term-item" data-category="geo" data-title="영토">
+                <div class="term-card category-geo bg-white p-6 rounded-2xl shadow-sm border border-gray-100 h-full flex flex-col">
+                    <div class="flex items-center mb-4">
+                        <div class="icon-bg w-10 h-10 rounded-lg flex items-center justify-center text-lg mr-3">
+                            <i class="fa-solid fa-earth-asia"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">영토</h3>
+                    </div>
+                    <p class="text-gray-600 leading-relaxed text-sm flex-grow">국가의 영역이 미치는 지표상의 범위를 뜻합니다.</p>
+                </div>
+            </div>
+
+            <div class="term-item" data-category="geo" data-title="영해">
+                <div class="term-card category-geo bg-white p-6 rounded-2xl shadow-sm border border-gray-100 h-full flex flex-col">
+                    <div class="flex items-center mb-4">
+                        <div class="icon-bg w-10 h-10 rounded-lg flex items-center justify-center text-lg mr-3">
+                            <i class="fa-solid fa-water"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">영해</h3>
+                    </div>
+                    <p class="text-gray-600 leading-relaxed text-sm flex-grow">해안선으로부터 12해리(약 22km) 내에 있는 바다를 의미합니다.</p>
+                </div>
+            </div>
+
+            <div class="term-item" data-category="geo" data-title="접속수역">
+                <div class="term-card category-geo bg-white p-6 rounded-2xl shadow-sm border border-gray-100 h-full flex flex-col">
+                    <div class="flex items-center mb-4">
+                        <div class="icon-bg w-10 h-10 rounded-lg flex items-center justify-center text-lg mr-3">
+                            <i class="fa-solid fa-anchor"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">접속수역</h3>
+                    </div>
+                    <p class="text-gray-600 leading-relaxed text-sm flex-grow">영해 바깥쪽으로 영해 기선에서 24해리까지의 수역으로, 관세나 출입국 관리 등을 위해 국가 통제권을 행사할 수 있는 곳입니다.</p>
+                </div>
+            </div>
+
+            <div class="term-item" data-category="geo" data-title="배타적 경제수역 eez">
+                <div class="term-card category-geo bg-white p-6 rounded-2xl shadow-sm border border-gray-100 h-full flex flex-col">
+                    <div class="flex items-center mb-4">
+                        <div class="icon-bg w-10 h-10 rounded-lg flex items-center justify-center text-lg mr-3">
+                            <i class="fa-solid fa-ship"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">배타적 경제수역 (EEZ)</h3>
+                    </div>
+                    <p class="text-gray-600 leading-relaxed text-sm flex-grow">영해 바깥쪽 기선에서 200해리까지의 영역으로, 연안국이 해양 자원의 탐사, 개발, 이용, 보전, 관리에 대한 권리를 가집니다.</p>
+                </div>
+            </div>
+
+            <div class="term-item" data-category="geo" data-title="가스 하이드레이트 불타는 얼음">
+                <div class="term-card category-geo bg-white p-6 rounded-2xl shadow-sm border border-gray-100 h-full flex flex-col">
+                    <div class="flex items-center mb-4">
+                        <div class="icon-bg w-10 h-10 rounded-lg flex items-center justify-center text-lg mr-3">
+                            <i class="fa-solid fa-fire-flame-curved"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">가스 하이드레이트</h3>
+                    </div>
+                    <p class="text-gray-600 leading-relaxed text-sm flex-grow">심해저의 저온과 고압 상태에서 천연가스가 물과 결합해 만들어진 고체 상태의 에너지원입니다. '불타는 얼음'으로 불리며, 독도 부근에 우리나라 국민이 약 30년간 사용할 수 있는 양(약 6억 톤)이 매장되어 있습니다.</p>
+                </div>
+            </div>
+
+            <div class="term-item" data-category="geo" data-title="중간수역 잠정수역">
+                <div class="term-card category-geo bg-white p-6 rounded-2xl shadow-sm border border-gray-100 h-full flex flex-col">
+                    <div class="flex items-center mb-4">
+                        <div class="icon-bg w-10 h-10 rounded-lg flex items-center justify-center text-lg mr-3">
+                            <i class="fa-solid fa-arrows-left-right"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">중간수역 (잠정수역)</h3>
+                    </div>
+                    <p class="text-gray-600 leading-relaxed text-sm flex-grow">1998년 신한일 어업협정 체결 당시 양국의 200해리 EEZ가 겹치는 부분에 설정한 수역입니다. 독도 주변 12해리는 제외되었으나 수역 자체에 독도가 포함되어 갈등을 낳았습니다.</p>
+                </div>
+            </div>
+
+            <div class="term-item" data-category="geo" data-title="조면암과 편마암">
+                <div class="term-card category-geo bg-white p-6 rounded-2xl shadow-sm border border-gray-100 h-full flex flex-col">
+                    <div class="flex items-center mb-4">
+                        <div class="icon-bg w-10 h-10 rounded-lg flex items-center justify-center text-lg mr-3">
+                            <i class="fa-solid fa-mountain"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">조면암과 편마암</h3>
+                    </div>
+                    <p class="text-gray-600 leading-relaxed text-sm flex-grow">독도와 울릉도는 지질적으로 화산 활동으로 형성된 조면암으로 구성되어 연결된 해산인 반면, 일본의 오키섬은 화산 활동과 상관없는 편마암으로 구성되어 있어 지질학적으로 무관합니다.</p>
+                </div>
+            </div>
+
+            <!-- ================= Category: Names ================= -->
+            <div class="term-item" data-category="name" data-title="우산도">
+                <div class="term-card category-name bg-white p-6 rounded-2xl shadow-sm border border-gray-100 h-full flex flex-col">
+                    <div class="flex items-center mb-4">
+                        <div class="icon-bg w-10 h-10 rounded-lg flex items-center justify-center text-lg mr-3">
+                            <i class="fa-solid fa-scroll"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">우산도(于山島)</h3>
+                    </div>
+                    <p class="text-gray-600 leading-relaxed text-sm flex-grow">삼국시대 우산국에서 유래한 명칭으로, 조선 시대 기록에 가장 많이 등장하는 독도의 옛 이름입니다.</p>
+                </div>
+            </div>
+
+            <div class="term-item" data-category="name" data-title="가지도 강치">
+                <div class="term-card category-name bg-white p-6 rounded-2xl shadow-sm border border-gray-100 h-full flex flex-col">
+                    <div class="flex items-center mb-4">
+                        <div class="icon-bg w-10 h-10 rounded-lg flex items-center justify-center text-lg mr-3">
+                            <i class="fa-solid fa-otter"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">가지도(可支島)</h3>
+                    </div>
+                    <p class="text-gray-600 leading-relaxed text-sm flex-grow">가지어(강치)가 많이 사는 섬이라는 뜻에서 유래한 독도의 옛 이름입니다.</p>
+                </div>
+            </div>
+
+            <div class="term-item" data-category="name" data-title="석도 독도 돌섬">
+                <div class="term-card category-name bg-white p-6 rounded-2xl shadow-sm border border-gray-100 h-full flex flex-col">
+                    <div class="flex items-center mb-4">
+                        <div class="icon-bg w-10 h-10 rounded-lg flex items-center justify-center text-lg mr-3">
+                            <i class="fa-solid fa-gem"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">석도(石島) / 독도(獨島)</h3>
+                    </div>
+                    <p class="text-gray-600 leading-relaxed text-sm flex-grow">돌로 이루어진 섬('돌섬', '독섬')을 한자로 표기한 이름입니다. 1900년 대한제국 칙령 제41호에 '석도'로 명시되었습니다.</p>
+                </div>
+            </div>
+
+            <div class="term-item" data-category="name" data-title="송도 죽도 마쓰시마 다케시마">
+                <div class="term-card category-name bg-white p-6 rounded-2xl shadow-sm border border-gray-100 h-full flex flex-col">
+                    <div class="flex items-center mb-4">
+                        <div class="icon-bg w-10 h-10 rounded-lg flex items-center justify-center text-lg mr-3">
+                            <i class="fa-brands fa-pagelines"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">송도(松島)와 죽도(竹島)</h3>
+                    </div>
+                    <p class="text-gray-600 leading-relaxed text-sm flex-grow">과거 일본은 울릉도를 죽도, 독도를 송도라 불렀으나, 혼동을 거쳐 1905년 시마네현 편입 당시 독도를 '죽도(다케시마)'라는 공식 지명으로 사용하게 되었습니다.</p>
+                </div>
+            </div>
+
+            <div class="term-item" data-category="name" data-title="리앙쿠르 서양 명칭">
+                <div class="term-card category-name bg-white p-6 rounded-2xl shadow-sm border border-gray-100 h-full flex flex-col">
+                    <div class="flex items-center mb-4">
+                        <div class="icon-bg w-10 h-10 rounded-lg flex items-center justify-center text-lg mr-3">
+                            <i class="fa-solid fa-sailboat"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">리앙쿠르(Liancourt)</h3>
+                    </div>
+                    <p class="text-gray-600 leading-relaxed text-sm flex-grow">1849년 독도를 처음 발견한 프랑스 포경선 리앙쿠르호의 이름을 딴 서양식 명칭입니다.</p>
+                </div>
+            </div>
+
+            <!-- ================= Category: History ================= -->
+            <div class="term-item" data-category="history" data-title="수토관 안용복">
+                <div class="term-card category-history bg-white p-6 rounded-2xl shadow-sm border border-gray-100 h-full flex flex-col">
+                    <div class="flex items-center mb-4">
+                        <div class="icon-bg w-10 h-10 rounded-lg flex items-center justify-center text-lg mr-3">
+                            <i class="fa-solid fa-user-shield"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">수토관(搜討官)</h3>
+                    </div>
+                    <p class="text-gray-600 leading-relaxed text-sm flex-grow">1697년 안용복 사건을 계기로 신설되어 1894년까지 3년에 한 번씩 울릉도와 주변 섬의 상황을 살피고 순찰하기 위해 파견되었던 조선의 관리입니다.</p>
+                </div>
+            </div>
+
+            <div class="term-item" data-category="history" data-title="대한제국 칙령 제41호">
+                <div class="term-card category-history bg-white p-6 rounded-2xl shadow-sm border border-gray-100 h-full flex flex-col">
+                    <div class="flex items-center mb-4">
+                        <div class="icon-bg w-10 h-10 rounded-lg flex items-center justify-center text-lg mr-3">
+                            <i class="fa-solid fa-stamp"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">대한제국 칙령 제41호</h3>
+                    </div>
+                    <p class="text-gray-600 leading-relaxed text-sm flex-grow">1900년 울릉도를 '울도'로 개칭하고, '석도(독도)'를 관할구역으로 명문화하여 독도가 우리의 영토임을 국내외에 선포한 관보 문서입니다.</p>
+                </div>
+            </div>
+
+            <div class="term-item" data-category="history" data-title="시마네현 고시 제40호 다케시마의 날">
+                <div class="term-card category-history bg-white p-6 rounded-2xl shadow-sm border border-gray-100 h-full flex flex-col">
+                    <div class="flex items-center mb-4">
+                        <div class="icon-bg w-10 h-10 rounded-lg flex items-center justify-center text-lg mr-3">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">시마네현 고시 제40호</h3>
+                    </div>
+                    <p class="text-gray-600 leading-relaxed text-sm flex-grow">1905년 일본 시마네현이 독도를 자국 영토로 불법 편입한다고 선언한 문서입니다. 이를 근거로 매년 2월 22일을 '다케시마의 날'로 지정해 영유권을 주장하고 있습니다.</p>
+                </div>
+            </div>
+
+            <div class="term-item" data-category="history" data-title="scapin 제677호 연합군">
+                <div class="term-card category-history bg-white p-6 rounded-2xl shadow-sm border border-gray-100 h-full flex flex-col">
+                    <div class="flex items-center mb-4">
+                        <div class="icon-bg w-10 h-10 rounded-lg flex items-center justify-center text-lg mr-3">
+                            <i class="fa-solid fa-file-signature"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">SCAPIN 제677호</h3>
+                    </div>
+                    <p class="text-gray-600 leading-relaxed text-sm flex-grow">1946년 연합군 최고사령관이 하달한 지령으로, 일본의 주권 행사 범위에서 독도를 명시적으로 제외하고 한국 영토로 인정한 문서입니다.</p>
+                </div>
+            </div>
+
+            <div class="term-item" data-category="history" data-title="평화선 이승만 라인">
+                <div class="term-card category-history bg-white p-6 rounded-2xl shadow-sm border border-gray-100 h-full flex flex-col">
+                    <div class="flex items-center mb-4">
+                        <div class="icon-bg w-10 h-10 rounded-lg flex items-center justify-center text-lg mr-3">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">평화선 (이승만 라인)</h3>
+                    </div>
+                    <p class="text-gray-600 leading-relaxed text-sm flex-grow">1952년 대한민국 정부가 어족 자원 보호와 영해/대륙붕 주권 행사를 위해 해안으로부터 평균 60마일 수역에 선포한 해양 경계선입니다.</p>
+                </div>
+            </div>
+
+            <div class="term-item" data-category="history" data-title="샌프란시스코 강화조약 대일강화조약">
+                <div class="term-card category-history bg-white p-6 rounded-2xl shadow-sm border border-gray-100 h-full flex flex-col">
+                    <div class="flex items-center mb-4">
+                        <div class="icon-bg w-10 h-10 rounded-lg flex items-center justify-center text-lg mr-3">
+                            <i class="fa-solid fa-handshake"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">샌프란시스코 강화조약</h3>
+                    </div>
+                    <p class="text-gray-600 leading-relaxed text-sm flex-grow">1951년 맺은 조약. 1차 초안에는 독도가 한국 반환 영토로 명시되었으나, 일본의 로비로 최종 조약문에는 독도의 이름이 의도적으로 누락되었습니다.</p>
+                </div>
+            </div>
+
+            <div class="term-item" data-category="history" data-title="독도 밀약 1965년">
+                <div class="term-card category-history bg-white p-6 rounded-2xl shadow-sm border border-gray-100 h-full flex flex-col">
+                    <div class="flex items-center mb-4">
+                        <div class="icon-bg w-10 h-10 rounded-lg flex items-center justify-center text-lg mr-3">
+                            <i class="fa-solid fa-user-secret"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">독도 밀약</h3>
+                    </div>
+                    <p class="text-gray-600 leading-relaxed text-sm flex-grow">1965년 한일기본조약 체결 과정의 비공식 합의입니다. 서로 영유권을 주장하되, 한국의 실효적 지배를 유지하고 시설 증축을 하지 않는다는 내용을 담았습니다.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- No Results State (Hidden by default) -->
+        <div id="noResults" class="hidden text-center py-20">
+            <div class="text-gray-400 text-6xl mb-4"><i class="fa-regular fa-face-frown-open"></i></div>
+            <h3 class="text-2xl font-bold text-gray-700 mb-2">검색 결과가 없습니다.</h3>
+            <p class="text-gray-500">다른 검색어를 입력하거나 필터를 해제해 보세요.</p>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-8 text-center text-sm mt-12">
+        <p>본 용어 사전은 독도 영유권에 대한 올바른 역사적, 지리적 이해를 돕기 위해 제작되었습니다.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('searchInput');
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const termItems = document.querySelectorAll('.term-item');
+            const noResults = document.getElementById('noResults');
+
+            let currentCategory = 'all';
+            let currentSearch = '';
+
+            // Filtering logic
+            function filterTerms() {
+                let visibleCount = 0;
+
+                termItems.forEach(item => {
+                    const category = item.getAttribute('data-category');
+                    const title = item.getAttribute('data-title').toLowerCase();
+                    const description = item.querySelector('p').textContent.toLowerCase();
+
+                    // Check Category matches
+                    const matchesCategory = currentCategory === 'all' || category === currentCategory;
+                    
+                    // Check Search term matches (in title or description)
+                    const matchesSearch = currentSearch === '' || 
+                                          title.includes(currentSearch) || 
+                                          description.includes(currentSearch);
+
+                    if (matchesCategory && matchesSearch) {
+                        item.style.display = 'block';
+                        // Re-trigger animation
+                        item.style.animation = 'none';
+                        item.offsetHeight; /* trigger reflow */
+                        item.style.animation = null;
+                        visibleCount++;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+
+                // Show 'No results' message if needed
+                if (visibleCount === 0) {
+                    noResults.classList.remove('hidden');
+                } else {
+                    noResults.classList.add('hidden');
+                }
+            }
+
+            // Search Input Event
+            searchInput.addEventListener('input', (e) => {
+                currentSearch = e.target.value.toLowerCase().trim();
+                filterTerms();
+            });
+
+            // Filter Buttons Event
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    // Update active styling
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    e.currentTarget.classList.add('active');
+
+                    // Update state and filter
+                    currentCategory = e.currentTarget.getAttribute('data-filter');
+                    filterTerms();
+                });
+            });
+        });
+    </script>
+</body>
+</html>
