@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>독도 연표 - 역사적 주요 사건</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Noto Sans KR"', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary': '#1e3a8a',
+                        'secondary': '#3b82f6',
+                        'accent': '#f59e0b',
+                        'dark': '#111827',
+                        'light': '#f8fafc',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f8fafc;
+            color: #334155;
+            line-height: 1.7;
+        }
+        
+        /* Reveal Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px) scale(0.98);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* Timeline Styles */
+        .timeline-container {
+            position: relative;
+        }
+        .timeline-container::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background: linear-gradient(to bottom, #3b82f6, #1e3a8a);
+            top: 0;
+            bottom: 0;
+            left: 20px;
+            margin-left: -2px;
+            border-radius: 2px;
+        }
+        @media (min-width: 768px) {
+            .timeline-container::after {
+                left: 50%;
+            }
+        }
+
+        .timeline-item {
+            position: relative;
+            width: 100%;
+            padding-left: 50px;
+            margin-bottom: 2rem;
+        }
+        @media (min-width: 768px) {
+            .timeline-item {
+                width: 50%;
+                padding-left: 0;
+            }
+            .timeline-item.left {
+                left: 0;
+                padding-right: 40px;
+                text-align: right;
+            }
+            .timeline-item.right {
+                left: 50%;
+                padding-left: 40px;
+            }
+        }
+
+        /* Timeline Dot */
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border: 4px solid #3b82f6;
+            border-radius: 50%;
+            top: 24px;
+            left: 10px;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+        .timeline-item:hover::after {
+            background-color: #3b82f6;
+            transform: scale(1.2);
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        }
+        @media (min-width: 768px) {
+            .timeline-item.left::after {
+                left: auto;
+                right: -10px;
+            }
+            .timeline-item.right::after {
+                left: -10px;
+            }
+        }
+
+        /* Card Hover Effect */
+        .timeline-card {
+            transition: all 0.3s ease;
+        }
+        .timeline-item:hover .timeline-card {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            border-color: #bfdbfe; /* blue-200 */
+        }
+
+        /* Era Header */
+        .era-header {
+            position: relative;
+            z-index: 20;
+            text-align: center;
+            margin: 4rem 0 2rem 0;
+        }
+        .era-header span {
+            background: #1e3a8a;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Floating Nav */
+        .floating-nav {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 50;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-blue-200 selection:text-blue-900">
+
+    <!-- Header (Consistent with main page) -->
+    <header class="relative bg-primary text-white overflow-hidden py-16 md:py-24">
+        <!-- Top Center Home Button -->
+        <div class="absolute top-6 left-1/2 transform -translate-x-1/2 z-30">
+            <a href="../index.html" class="inline-flex items-center justify-center px-5 py-2.5 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-sm font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+                <i class="fa-solid fa-house mr-2"></i> 홈으로
+            </a>
+        </div>
+
+        <div class="absolute inset-0 opacity-20">
+            <svg class="h-full w-full object-cover" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
+                <path fill="#ffffff" fill-opacity="1" d="M0,224L48,213.3C96,203,192,181,288,186.7C384,192,480,224,576,218.7C672,213,768,171,864,149.3C960,128,1056,128,1152,149.3C1248,171,1344,213,1392,234.7L1440,256L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+            </svg>
+        </div>
+        <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center mt-8">
+            <span class="inline-block py-1 px-3 rounded-full bg-blue-800 text-blue-100 text-sm font-semibold tracking-wider mb-4 border border-blue-700">
+                Timeline History
+            </span>
+            <h1 class="text-3xl md:text-5xl font-black tracking-tight leading-tight mb-6">
+                독도 연표
+            </h1>
+            <p class="text-lg text-blue-100 max-w-2xl mx-auto font-light">
+                선사시대부터 현대에 이르기까지, 독도를 둘러싼 역사적 기록과 주요 사건들을 시간순으로 살펴봅니다.
+            </p>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="timeline-container">
+
+            <!-- Era 1: 독도의 인지와 조선 시대의 기록 -->
+            <div class="era-header reveal" id="era-1">
+                <span>독도의 인지와 조선 시대의 기록</span>
+            </div>
+
+            <div class="timeline-item left reveal">
+                <div class="timeline-card bg-white p-6 rounded-xl border border-gray-100 shadow-sm relative">
+                    <span class="text-primary font-black text-xl mb-1 block">460~250만 년 전</span>
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">화산활동으로 독도 탄생</h3>
+                    <p class="text-gray-600 text-sm">해저 약 2,000m에서 솟은 용암이 굳어져 형성된 화산섬.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item right reveal">
+                <div class="timeline-card bg-white p-6 rounded-xl border border-gray-100 shadow-sm relative">
+                    <span class="text-primary font-black text-xl mb-1 block">1454년</span>
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">《세종실록지리지》 편찬</h3>
+                    <p class="text-gray-600 text-sm">우산(독도)과 무릉(울릉도) 두 섬에 대한 기록이 등장하여 조선의 인지를 명확히 보여줌.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item left reveal">
+                <div class="timeline-card bg-white p-6 rounded-xl border border-gray-100 shadow-sm relative">
+                    <span class="text-primary font-black text-xl mb-1 block">1481년</span>
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">《팔도총도》 제작</h3>
+                    <p class="text-gray-600 text-sm">울릉도와 우산도 두 개의 섬을 그림으로 표기함.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item right reveal">
+                <div class="timeline-card bg-white p-6 rounded-xl border border-gray-100 shadow-sm relative">
+                    <span class="text-primary font-black text-xl mb-1 block">1531년</span>
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">《신증동국여지승람》 편찬</h3>
+                    <p class="text-gray-600 text-sm">우산도와 울릉도에 대한 상세 기록 수록.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item left reveal">
+                <div class="timeline-card bg-white p-6 rounded-xl border border-gray-100 shadow-sm relative bg-red-50">
+                    <span class="text-red-700 font-black text-xl mb-1 block">1667년</span>
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">일본 사료 《은주시청합기》 편찬</h3>
+                    <p class="text-gray-700 text-sm"><i class="fa-solid fa-book-open text-red-500 mr-1"></i> 독도와 울릉도가 <strong>조선의 영토임</strong>을 일본 측 문헌에서 명시함.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item right reveal">
+                <div class="timeline-card bg-white p-6 rounded-xl border border-gray-100 shadow-sm relative border-l-4 border-l-accent">
+                    <span class="text-primary font-black text-xl mb-1 block">1693년 3월</span>
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">1차 안용복 사건 발생</h3>
+                    <p class="text-gray-600 text-sm">어부 40여 명이 울릉도에서 조업 중 일본에 피랍. 안용복이 일본 막부에 조선 땅임을 강력히 주장함.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item left reveal">
+                <div class="timeline-card bg-white p-6 rounded-xl border border-gray-100 shadow-sm relative bg-red-50">
+                    <span class="text-red-700 font-black text-xl mb-1 block">1695년</span>
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">돗토리번의 답변</h3>
+                    <p class="text-gray-700 text-sm">도쿠가와 막부의 질문에 대해 돗토리번이 "죽도(울릉도)는 돗토리번 소속이 아니다"라고 공식 답변함.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item right reveal">
+                <div class="timeline-card bg-white p-6 rounded-xl border border-gray-100 shadow-sm relative bg-red-50">
+                    <span class="text-red-700 font-black text-xl mb-1 block">1696년 1월</span>
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">일본, 죽도(울릉도) 도해 금지령 하달</h3>
+                    <p class="text-gray-700 text-sm">도쿠가와 막부가 자국민의 울릉도 도해를 공식적으로 금지함.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item left reveal">
+                <div class="timeline-card bg-white p-6 rounded-xl border border-gray-100 shadow-sm relative border-r-4 border-r-accent">
+                    <span class="text-primary font-black text-xl mb-1 block">1696년</span>
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">2차 안용복 사건 발생</h3>
+                    <p class="text-gray-600 text-sm">일본 측 보고서인 《원록9병자년 조선주착안 일권지각서》에 울릉도와 독도가 <strong>조선 강원도 소속</strong>으로 기록됨.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item right reveal">
+                <div class="timeline-card bg-white p-6 rounded-xl border border-gray-100 shadow-sm relative">
+                    <span class="text-primary font-black text-xl mb-1 block">1697년</span>
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">울릉도 수토관 제도 신설</h3>
+                    <p class="text-gray-600 text-sm">조선 조정, 안용복 사건의 영향으로 정기적으로 관리를 파견하는 수토 제도를 신설 (1894년까지 유지).</p>
+                </div>
+            </div>
+
+            <div class="timeline-item left reveal">
+                <div class="timeline-card bg-white p-6 rounded-xl border border-gray-100 shadow-sm relative bg-red-50">
+                    <span class="text-red-700 font-black text-xl mb-1 block">1779년</span>
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">나가쿠보 세키스이 《개정 일본여지로정전도》</h3>
+                    <p class="text-gray-700 text-sm">일본 학자가 제작한 지도에 독도를 <strong>일본 영역 밖</strong>으로 명확히 표기함.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item right reveal">
+                <div class="timeline-card bg-white p-6 rounded-xl border border-gray-100 shadow-sm relative bg-red-50">
+                    <span class="text-red-700 font-black text-xl mb-1 block">1785년</span>
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">하야시 시헤이 《삼국접양지도》</h3>
+                    <p class="text-gray-700 text-sm">일본 실학자 제작. 울릉도와 독도를 <strong>'조선의 것'</strong>으로 표기함.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item left reveal">
+                <div class="timeline-card bg-white p-6 rounded-xl border border-gray-100 shadow-sm relative">
+                    <span class="text-primary font-black text-xl mb-1 block">1808년</span>
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">조선 《만기요람》 편찬</h3>
+                    <p class="text-gray-600 text-sm">"울릉과 우산은 모두 우산국의 땅"이라고 명시하여 고유 영토임을 재확인.</p>
+                </div>
+            </div>
+
+            <!-- Era 2: 서구 열강의 발견과 일본의 독도 침탈 -->
+            <div class="era-header reveal" id="era-2">
+                <span class="bg-indigo-800">서구 열강의 발견과 일본의 독도 침탈</span>
+            </div>
+
+            <div class="timeline-item right reveal">
+                <div class="timeline-card bg-white p-6 rounded-xl border border-gray-100 shadow-sm relative">
+                    <span class="text-primary font-black text-xl mb-1 block">1849~1855년</span>
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">서양 열강의 독도 발견</h3>
+                    <p class="text-gray-600 text-sm">
+                        프랑스 리앙쿠르호(1849), 러시아 올리부차호(1854), 영국 호넷호(1855) 등이 차례로 발견하고 서양식 이름을 명명함.
+                    </p>
+                </div>
+            </div>
+
+            <div class="timeline-item left reveal">
+                <div class="timeline-card bg-white p-6 rounded-xl border border-gray-100 shadow-sm relative bg-red-50">
+                    <span class="text-red-700 font-black text-xl mb-1 block">1870년</span>
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">일본 외무성 《조선국 교제시말 내탐서》</h3>
+                    <p class="text-gray-700 text-sm">울릉도와 독도가 조선에 속하게 된 사정을 조사하여 기록함.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item right reveal">
+                <div class="timeline-card bg-white p-6 rounded-xl border border-gray-100 shadow-sm relative bg-red-50 border-l-4 border-l-red-500">
+                    <span class="text-red-700 font-black text-xl mb-1 block">1877년</span>
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">태정관 지령</h3>
+                    <p class="text-gray-700 text-sm font-semibold">일본 최고행정기관 하달: "죽도(울릉도) 외 1도(독도)는 일본과 관계가 없다는 것을 명심할 것"</p>
+                </div>
+            </div>
+
+            <div class="timeline-item left reveal">
+                <div class="timeline-card bg-white p-6 rounded-xl border border-gray-100 shadow-sm relative border-r-4 border-r-primary">
+                    <span class="text-primary font-black text-xl mb-1 block">1900년 10월 25일</span>
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">대한제국 「칙령 제41호」 공포</h3>
+                    <p class="text-gray-600 text-sm">울릉도를 '울도'로 개칭하고 <strong>독도를 관할구역으로 명문화</strong>하여 근대적 행정 조치를 완료함.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item right reveal">
+                <div class="timeline-card bg-slate-100 p-6 rounded-xl border border-slate-200 shadow-sm relative">
+                    <span class="text-slate-600 font-black text-xl mb-1 block">1904년 9월 29일</span>
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">나카이 요자부로 편입 청원</h3>
+                    <p class="text-gray-600 text-sm">일본 어업인이 일본 정부에 '독도영토편입청원서' 제출.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item left reveal">
+                <div class="timeline-card bg-slate-100 p-6 rounded-xl border border-slate-200 shadow-sm relative">
+                    <span class="text-slate-600 font-black text-xl mb-1 block">1905년 1월 28일</span>
+                    <h3 class="font-bold text-red-600 text-lg mb-2">일본 내각, 독도 편입 각의 결정</h3>
+                    <p class="text-gray-600 text-sm">러일전쟁의 전략적 필요에 의해 비밀리에 침탈을 결정함.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item right reveal">
+                <div class="timeline-card bg-slate-100 p-6 rounded-xl border border-slate-200 shadow-sm relative border-l-4 border-l-red-600">
+                    <span class="text-slate-600 font-black text-xl mb-1 block">1905년 2월 22일</span>
+                    <h3 class="font-bold text-red-600 text-lg mb-2">시마네현 고시 제40호</h3>
+                    <p class="text-gray-600 text-sm">독도를 '다케시마'로 칭하고 시마네현에 <strong>불법 편입</strong> 고시.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item left reveal">
+                <div class="timeline-card bg-white p-6 rounded-xl border border-gray-100 shadow-sm relative">
+                    <span class="text-primary font-black text-xl mb-1 block">1906년 4월 4일</span>
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">울릉군수 심흥택에 통보</h3>
+                    <p class="text-gray-600 text-sm">시마네현 관리들이 울릉군수 심흥택에게 독도의 일본 편입 사실을 통보함.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item right reveal">
+                <div class="timeline-card bg-white p-6 rounded-xl border border-gray-100 shadow-sm relative">
+                    <span class="text-primary font-black text-xl mb-1 block">1906년 5월 20일</span>
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">대한제국 참정대신 박제순 <지령 3호></h3>
+                    <p class="text-gray-600 text-sm">일본의 독도 영지 주장이 근거 없음을 공식 지시하며 항의함.</p>
+                </div>
+            </div>
+
+            <!-- Era 3: 광복 이후의 독도 수호와 한일 협정 -->
+            <div class="era-header reveal" id="era-3">
+                <span class="bg-blue-600">광복 이후의 독도 수호와 한일 협정</span>
+            </div>
+
+            <div class="timeline-item left reveal">
+                <div class="timeline-card bg-blue-50 p-6 rounded-xl border border-blue-200 shadow-sm relative">
+                    <span class="text-primary font-black text-xl mb-1 block">1946년 1월 29일</span>
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">SCAPIN 제677호</h3>
+                    <p class="text-gray-700 text-sm">연합군최고사령관 지령 부속지도. 독도를 <strong>한국 영토로 표시하여 일본 주권 행사에서 배제</strong>함.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item right reveal">
+                <div class="timeline-card bg-blue-50 p-6 rounded-xl border border-blue-200 shadow-sm relative">
+                    <span class="text-primary font-black text-xl mb-1 block">1947년 3월 20일</span>
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">조약 1차 초안</h3>
+                    <p class="text-gray-700 text-sm">연합국의 '대 일본 강화조약' 1차 초안에 독도가 한국 영토로 명시됨.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item left reveal">
+                <div class="timeline-card bg-white p-6 rounded-xl border border-gray-100 shadow-sm relative">
+                    <span class="text-primary font-black text-xl mb-1 block">1950년대 초</span>
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">독도의용수비대 활동</h3>
+                    <p class="text-gray-600 text-sm">홍순칠을 비롯한 민간인들이 독도의용수비대를 자발적으로 조직하여 일본의 침범에 맞서 수호 활동 전개.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item right reveal">
+                <div class="timeline-card bg-white p-6 rounded-xl border border-gray-100 shadow-sm relative border-l-4 border-l-primary">
+                    <span class="text-primary font-black text-xl mb-1 block">1951년 1월 18일</span>
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">이승만 라인 (평화선) 선포</h3>
+                    <p class="text-gray-600 text-sm">대한민국 정부, 인접해양의 주권에 대한 선언을 통해 독도를 포함한 수역의 주권 천명.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item left reveal">
+                <div class="timeline-card bg-slate-100 p-6 rounded-xl border border-slate-200 shadow-sm relative">
+                    <span class="text-slate-600 font-black text-xl mb-1 block">1951년 9월 8일</span>
+                    <h3 class="font-bold text-red-600 text-lg mb-2">샌프란시스코 강화조약 체결</h3>
+                    <p class="text-gray-600 text-sm">일본의 방해 로비로 최종 조약문에서 독도의 이름이 명문화되는 것이 저지되며 법적 모호성 발생.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item right reveal">
+                <div class="timeline-card bg-white p-6 rounded-xl border border-gray-100 shadow-sm relative">
+                    <span class="text-primary font-black text-xl mb-1 block">1953년 7월 / 9월</span>
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">독도경비대 상시 주둔 시작</h3>
+                    <p class="text-gray-600 text-sm">울릉경찰서 '독도순라반' 순시(7월) 및 독도경비대 특채 상시 주둔(9월) 개시.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item left reveal">
+                <div class="timeline-card bg-white p-6 rounded-xl border border-gray-100 shadow-sm relative">
+                    <span class="text-primary font-black text-xl mb-1 block">1953년 8월 / 1954년, 1962년</span>
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">일본의 항의 및 ICJ 회부 제안</h3>
+                    <p class="text-gray-600 text-sm">일본, 평화선 항의 및 국제사법재판소 회부를 제안하나 한국 정부가 단호히 거부함.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item right reveal">
+                <div class="timeline-card bg-slate-100 p-6 rounded-xl border border-slate-200 shadow-sm relative">
+                    <span class="text-slate-600 font-black text-xl mb-1 block">1965년 6월</span>
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">한일기본조약 체결 (독도 밀약)</h3>
+                    <p class="text-gray-600 text-sm">관계 정상화를 위해 독도 영유권 주장을 각자 유지하며 현상을 유지하기로 잠정 합의.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item left reveal">
+                <div class="timeline-card bg-green-50 p-6 rounded-xl border border-green-100 shadow-sm relative">
+                    <span class="text-green-700 font-black text-xl mb-1 block">1968년 / 1981년</span>
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">최초 주민 최종덕 거주</h3>
+                    <p class="text-gray-700 text-sm">서도 생활 시작(1968), 이후 주민등록을 이전(1981)하여 공식적으로 <strong>유인도</strong>로 만듦.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item right reveal">
+                <div class="timeline-card bg-slate-100 p-6 rounded-xl border border-slate-200 shadow-sm relative">
+                    <span class="text-slate-600 font-black text-xl mb-1 block">1998년 9월</span>
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">신한일 어업협정 체결</h3>
+                    <p class="text-gray-600 text-sm">유엔해양법 협약에 따라 독도가 한일 <strong>중간수역</strong>에 포함되며 영유권 및 어장 갈등이 다시 불거짐.</p>
+                </div>
+            </div>
+
+            <!-- Era 4: 2000년대 이후 역사 갈등의 심화 -->
+            <div class="era-header reveal" id="era-4">
+                <span class="bg-red-800">2000년대 이후 역사 갈등의 심화</span>
+            </div>
+
+            <div class="timeline-item left reveal">
+                <div class="timeline-card bg-white p-6 rounded-xl border border-gray-100 shadow-sm relative">
+                    <span class="text-primary font-black text-xl mb-1 block">2000년 3월</span>
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">'독도의 날' 제정 운동 시작</h3>
+                    <p class="text-gray-600 text-sm">시민단체 '독도수호대' 창립, 대한제국 칙령 공포일(10/25)을 기념.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item right reveal">
+                <div class="timeline-card bg-red-50 p-6 rounded-xl border border-red-100 shadow-sm relative border-l-4 border-l-red-500">
+                    <span class="text-red-700 font-black text-xl mb-1 block">2005년 3월 16일</span>
+                    <h3 class="font-bold text-red-700 text-lg mb-2">일본 시마네현 '다케시마의 날' 조례 제정</h3>
+                    <p class="text-gray-700 text-sm">매년 2월 22일을 지정. 이로 인해 경상북도와 시마네현 교류가 단절됨.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item left reveal">
+                <div class="timeline-card bg-white p-6 rounded-xl border border-gray-100 shadow-sm relative">
+                    <span class="text-primary font-black text-xl mb-1 block">2006년 4월 25일</span>
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">노무현 전 대통령 특별담화</h3>
+                    <p class="text-gray-600 text-sm">독도 문제를 단순 영토 분쟁이 아닌 역사적 정의의 문제로 규정하고 정면 대응 선언.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item right reveal">
+                <div class="timeline-card bg-red-50 p-6 rounded-xl border border-red-100 shadow-sm relative">
+                    <span class="text-red-700 font-black text-xl mb-1 block">2008년</span>
+                    <h3 class="font-bold text-red-700 text-lg mb-2">일본 문부과학성 학습지도요령 개악</h3>
+                    <p class="text-gray-700 text-sm">교육 지침을 통해 '다케시마는 일본 영토'라고 가르칠 것을 공식 주문. 한국은 '독도연구소' 출범으로 대응.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item left reveal">
+                <div class="timeline-card bg-red-50 p-6 rounded-xl border border-red-100 shadow-sm relative border-r-4 border-r-red-500 mb-0">
+                    <span class="text-red-700 font-black text-xl mb-1 block">2011년 / 2015년</span>
+                    <h3 class="font-bold text-red-700 text-lg mb-2">일본 교과서 왜곡 심화</h3>
+                    <p class="text-gray-700 text-sm">
+                        2011년 18종 중학교 교과서 중 14종에 영유권 서술.<br>
+                        2015년 초등학교 교과서(4종)에 '일본 영토, 한국 불법 점거' 수록.
+                    </p>
+                </div>
+            </div>
+
+        </div> <!-- End Timeline Container -->
+    </main>
+
+    <!-- Floating Navigation -->
+    <div class="floating-nav bg-white p-2 rounded-xl shadow-lg border border-gray-200 flex flex-col gap-2">
+        <button onclick="document.getElementById('era-1').scrollIntoView({behavior:'smooth'})" class="w-10 h-10 rounded-lg hover:bg-gray-100 text-gray-600 flex items-center justify-center" title="조선시대">
+            <i class="fa-solid fa-scroll"></i>
+        </button>
+        <button onclick="document.getElementById('era-2').scrollIntoView({behavior:'smooth'})" class="w-10 h-10 rounded-lg hover:bg-gray-100 text-indigo-600 flex items-center justify-center" title="서구열강/침탈">
+            <i class="fa-solid fa-ship"></i>
+        </button>
+        <button onclick="document.getElementById('era-3').scrollIntoView({behavior:'smooth'})" class="w-10 h-10 rounded-lg hover:bg-gray-100 text-blue-600 flex items-center justify-center" title="광복 이후">
+            <i class="fa-solid fa-flag"></i>
+        </button>
+        <button onclick="document.getElementById('era-4').scrollIntoView({behavior:'smooth'})" class="w-10 h-10 rounded-lg hover:bg-gray-100 text-red-600 flex items-center justify-center" title="현대">
+            <i class="fa-solid fa-book"></i>
+        </button>
+        <button onclick="window.scrollTo({top:0, behavior:'smooth'})" class="w-10 h-10 rounded-lg bg-gray-800 text-white hover:bg-gray-700 flex items-center justify-center" title="맨 위로">
+            <i class="fa-solid fa-arrow-up"></i>
+        </button>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-8 text-center text-sm mt-12">
+        <p>본 연표는 제공된 역사적 기록 데이터를 바탕으로 작성되었습니다. © 2026 Dokdo Timeline</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Scroll Animation (Intersection Observer)
+            const reveals = document.querySelectorAll('.reveal');
+            
+            const revealOptions = {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const revealOnScroll = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) {
+                        return;
+                    } else {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, revealOptions);
+
+            reveals.forEach(reveal => {
+                revealOnScroll.observe(reveal);
+            });
+        });
+    </script>
+</body>
+</html>
